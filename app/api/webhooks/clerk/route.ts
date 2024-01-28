@@ -1,6 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET as string;
@@ -36,6 +37,37 @@ export async function POST(req: Request) {
 
   const { id } = event.data;
   const eventType = event.type;
+  if (eventType === "user.created") {
+    await db.user.create({
+      data: {
+        externalUserId: payload.data.id,
+        username: payload.data.username,
+        imageUrl: payload.data.image_url,
+        fullName: `${payload.data.first_name} ${payload.data.last_name}`,
+      },
+    });
+  }
 
+  if (eventType === "user.updated") {
+    const existingUser = await db.user.findUnique({
+      where: { externalUserId: payload.data.id },
+    });
+    if (!existingUser) {
+      return new Response("User Not Found", { status: 404 });
+    }
+    await db.user.update({
+      where: { externalUserId: payload.data.id },
+      data: {
+        username: payload.data.username,
+        imageUrl: payload.data.image_url,
+      },
+    });
+  }
+
+  if (eventType === "user.deleted") {
+    await db.user.delete({
+      where: { externalUserId: payload.data.id },
+    });
+  }
   return new Response("", { status: 200 });
 }
