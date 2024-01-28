@@ -13,6 +13,7 @@ datasource db {
 model User {
   id                String @default(cuid()) @id @map("_id")
   username          String @unique
+  fullName          String
   imageUrl          String @db.String
   externalUserId    String @unique
   bio               String? @db.String
