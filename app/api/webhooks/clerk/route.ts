@@ -49,12 +49,6 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.updated") {
-    const existingUser = await db.user.findUnique({
-      where: { externalUserId: payload.data.id },
-    });
-    if (!existingUser) {
-      return new Response("User Not Found", { status: 404 });
-    }
     await db.user.update({
       where: { externalUserId: payload.data.id },
       data: {
