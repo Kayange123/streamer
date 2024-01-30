@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 import { X, SearchIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { Input } from "../ui/input";
 
 const Search = () => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const Search = () => {
       className="relative w-full lg:w-[400px] flex items-center"
       onSubmit={onSubmit}
     >
-      <input
+      <Input
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="Search..."
