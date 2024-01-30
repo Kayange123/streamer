@@ -23,17 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        layout: {},
-      }}
-    >
+    <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
+            forcedTheme="dark"
+            storageKey="streamers-theme"
             disableTransitionOnChange
           >
             {children}
