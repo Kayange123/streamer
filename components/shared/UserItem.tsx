@@ -8,6 +8,8 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
+import LiveBadge from "./live-badge";
+import { Skeleton } from "../ui/skeleton";
 
 interface UserItemProps {
   data: User;
@@ -43,9 +45,22 @@ const UserItem = ({ data, isLive }: UserItemProps) => {
               username={data?.username}
               isLive={isLive}
             />
+            {!collapsed && <p className="truncate">{data?.username}</p>}
+            {!collapsed && isLive && <LiveBadge className="ml-auto" />}
           </div>
         </Link>
       </Button>
+    </li>
+  );
+};
+
+export const UserItemSkeleton = () => {
+  return (
+    <li className="flex items-center px-3 py-2 gap-x-4">
+      <Skeleton className="max-h-[32px] min-w-[32px] rounded-full" />
+      <div className="flex-1">
+        <Skeleton className="h-6" />
+      </div>
     </li>
   );
 };
