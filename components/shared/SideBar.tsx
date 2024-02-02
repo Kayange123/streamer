@@ -2,7 +2,7 @@ import React from "react";
 import Wrapper from "../common/Wrapper";
 import Toggle from "../common/Toggle";
 import Recommended, { RecommendedSkeleton } from "./Recommended";
-import { getRecommended } from "@/lib/recommended-service";
+import { getRecommended } from "@/lib/services/recommended-service";
 
 const SideBar = async () => {
   const recommendedUsers = await getRecommended();
