@@ -2,6 +2,7 @@ import { isFollowingUser } from "@/lib/services/follow-service";
 import { getUserByUsername } from "@/lib/services/user-service";
 import { User } from "@prisma/client";
 import React from "react";
+import UserPageActions from "./_components/UserPageActions";
 
 interface UserPageProps {
   params: {
@@ -18,7 +19,11 @@ const UserPage = async ({ params: { username } }: UserPageProps) => {
   } catch (error) {
     throw new Error("User Not Found");
   }
-  return <div>UserPage</div>;
+  return (
+    <div>
+      <UserPageActions isFollowing={isFollowing} userId={user?.id} />
+    </div>
+  );
 };
 
 export default UserPage;
