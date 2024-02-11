@@ -13,7 +13,7 @@ import { Skeleton } from "../ui/skeleton";
 
 interface UserItemProps {
   data: User;
-  isLive: boolean;
+  isLive?: boolean;
 }
 
 const UserItem = ({ data, isLive }: UserItemProps) => {
