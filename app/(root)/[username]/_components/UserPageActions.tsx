@@ -1,3 +1,5 @@
+"use client"
+
 import { onFollow, onUnfollow } from "@/actions/server.actions";
 import React, { useTransition } from "react";
 
