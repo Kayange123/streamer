@@ -24,3 +24,32 @@ export const isBlockedByUser = async (id: string): Promise<Boolean> => {
     return false;
   }
 };
+
+export const blockUser = async (id: string) => {
+  try {
+    const user = await getLoggedUser();
+
+    if (user.id === id) throw new Error("You can not block yourself");
+
+    const existingBlock = await db.blocker.findUnique({
+      where: {
+        blockedId_blockerId: {
+          blockedId: id,
+          blockerId: user.id,
+        },
+      },
+    });
+    if (existingBlock) throw new Error("You already blocked");
+
+    const block = await db.blocker.create({
+      data: {
+        blockedId: id,
+        blockerId: user.id,
+      },
+      include: { blocked: true },
+    });
+    return block;
+  } catch (error) {
+    throw new Error("Failed to block user");
+  }
+};
