@@ -53,3 +53,32 @@ export const blockUser = async (id: string) => {
     throw new Error("Failed to block user");
   }
 };
+
+export const unblockUser = async (id: string) => {
+  try {
+    const user = await getLoggedUser();
+
+    if (user.id === id) throw new Error("You can not unblock yourself");
+
+    const existingBlock = await db.blocker.findUnique({
+      where: {
+        blockedId_blockerId: {
+          blockedId: id,
+          blockerId: user.id,
+        },
+      },
+    });
+
+    if (!existingBlock) throw new Error("You have not blocked this user");
+
+    const unblocked = await db.blocker.delete({
+      where: {
+        id: existingBlock.id,
+      },
+      include: { blocked: true },
+    });
+    return unblocked;
+  } catch (error) {
+    throw new Error("Failed to block user");
+  }
+};
