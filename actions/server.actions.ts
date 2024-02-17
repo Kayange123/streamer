@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { blockUser, unblockUser } from "@/lib/services/block-service";
 import { followUser, unfollowUser } from "@/lib/services/follow-service";
 import { revalidatePath } from "next/cache";
 
@@ -29,6 +29,30 @@ export const onUnfollow = async (id: string) => {
     }
 
     return unfollowedUser;
+  } catch (error) {
+    throw new Error("Internal Server Error");
+  }
+};
+
+export const onBlock = async (id: string) => {
+  try {
+    const blockedUser = await blockUser(id);
+    revalidatePath("/");
+    if (blockedUser) revalidatePath(`/${blockedUser.blocked.username}`);
+
+    return blockedUser;
+  } catch (error) {
+    throw new Error("Internal Server Error");
+  }
+};
+
+export const onUnblock = async (id: string) => {
+  try {
+    const blockedUser = await unblockUser(id);
+    revalidatePath("/");
+    if (blockedUser) revalidatePath(`/${blockedUser.blocked.username}`);
+
+    return blockedUser;
   } catch (error) {
     throw new Error("Internal Server Error");
   }
