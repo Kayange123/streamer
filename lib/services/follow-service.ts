@@ -73,6 +73,7 @@ export const unfollowUser = async (id: string) => {
 
     return follow;
   } catch (error) {
+    console.log("unfollowUser -->", error);
     throw new Error("Internal Server Error");
   }
 };
@@ -82,7 +83,16 @@ export const getFollowedUsers = async () => {
     const user = await getLoggedUser();
 
     const followedUsers = await db.follow.findMany({
-      where: { followerId: user?.id },
+      where: {
+        followerId: user?.id,
+        following: {
+          blocking: {
+            none: {
+              blockedId: user?.id,
+            },
+          },
+        },
+      },
       include: { following: true },
     });
 

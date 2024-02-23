@@ -15,7 +15,8 @@ export const getRecommended = async () => {
     ? {
         AND: [
           { NOT: { id: userId } },
-          { NOT: { followedBy: { some: { followeId: userId } } } },
+          { NOT: { followers: { some: { followerId: userId } } } },
+          { NOT: { blocking: { some: { blockedId: userId } } } },
         ],
       }
     : {};
