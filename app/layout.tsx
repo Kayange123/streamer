@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site.config";
 import { ThemeProvider } from "@/providers/theme-providers";
 
 import "./globals.css";
+import ToasterProvider from "@/providers/toaster-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
             storageKey="streamers-theme"
             disableTransitionOnChange
           >
+            <ToasterProvider />
             {children}
           </ThemeProvider>
         </body>
